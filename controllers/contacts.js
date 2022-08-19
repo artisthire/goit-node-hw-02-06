@@ -1,5 +1,5 @@
 const {HttpError} = require('../utils/utils');
-const contactApi = require('../models/contacts');
+const contactApi = require('../services/contacts');
 
 /**
  * Sends a response with a list of all contacts
@@ -68,10 +68,30 @@ const updateContact = async (req, res) => {
   res.json(updatedContact);
 };
 
+/**
+ * Update field favorite in contact in the database and sends a response with an updated contact
+ * @param {object} req - Request's object
+ * @param {object} res - Response's object
+ */
+const updateContactFavotiteStatus = async (req, res) => {
+  const {contactId} = req.params;
+  const updatedContact = await contactApi.updateContactFavotiteStatus(
+    contactId,
+    req.body
+  );
+
+  if (!updatedContact) {
+    throw new HttpError(404, 'Not found');
+  }
+
+  res.json(updatedContact);
+};
+
 module.exports = {
   getAllContacts,
   getContact,
   addContact,
   removeContact,
   updateContact,
+  updateContactFavotiteStatus,
 };

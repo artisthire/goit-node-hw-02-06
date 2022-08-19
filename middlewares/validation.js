@@ -12,7 +12,6 @@ const validate =
     if (error) {
       error.messageDetails = {message: customMessage, details: error.message};
       error.status = 400;
-      console.log(error);
       next(error);
     }
 

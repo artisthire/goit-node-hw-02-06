@@ -1,7 +1,10 @@
 const express = require('express');
 
 const contactsController = require('../../controllers/contacts');
-const {postScheme, putScheme} = require('../../schemas/contacts');
+const {
+  contactAddJoiSchema,
+  updateFavoriteJoiSchema,
+} = require('../../models/contact');
 const validate = require('../../middlewares/validation');
 const catchError = require('../../middlewares/controllersErrorCatcher');
 
@@ -13,7 +16,7 @@ router.get('/:contactId', catchError(contactsController.getContact));
 
 router.post(
   '/',
-  validate(postScheme, 'missing required name field'),
+  validate(contactAddJoiSchema, 'missing required name field'),
   catchError(contactsController.addContact)
 );
 
@@ -21,8 +24,14 @@ router.delete('/:contactId', catchError(contactsController.removeContact));
 
 router.put(
   '/:contactId',
-  validate(putScheme, 'missing fields'),
+  validate(contactAddJoiSchema, 'missing fields'),
   catchError(contactsController.updateContact)
+);
+
+router.put(
+  '/:contactId/favorite',
+  validate(updateFavoriteJoiSchema, 'missing field favorite'),
+  catchError(contactsController.updateContactFavotiteStatus)
 );
 
 module.exports = router;
