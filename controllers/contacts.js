@@ -1,23 +1,25 @@
 const {HttpError} = require('../utils/utils');
-const contactApi = require('../services/contacts');
+const {Contact} = require('../models/contact');
 
 /**
- * Sends a response with a list of all contacts
+ * Return a list of all contacts from the database
  * @param {object} res - Response's object
+ * @return {Array.<{_id: ObjectId, name: String, email: String, phone: String, favorite: boolean}>} all contacts
  */
 const getAllContacts = async (_, res) => {
-  const contacts = await contactApi.listContacts();
+  const contacts = await Contact.find();
   res.json(contacts);
 };
 
 /**
- * Sends a response with a contact by id
+ * Return a contact from the database by id
  * @param {object} req - Request's object
  * @param {object} res - Response's object
+ * @return {{_id: ObjectId, name: String, email: String, phone: String, favorite: boolean} | null} selected contact, or 'null' if contact is not found
  */
 const getContact = async (req, res) => {
   const {contactId} = req.params;
-  const contact = await contactApi.getContactById(contactId);
+  const contact = await Contact.findById(contactId);
 
   if (!contact) {
     throw new HttpError(404, 'Not found');
@@ -27,23 +29,26 @@ const getContact = async (req, res) => {
 };
 
 /**
- * Adds a contact in the DB and sends a response with an added contact
+ * Add a new contact to the database
  * @param {object} req - Request's object
  * @param {object} res - Response's object
+ * @return {{_id: ObjectId, name: String, email: String, phone: String, favorite: boolean}} added contact
  */
 const addContact = async (req, res) => {
-  const contact = await contactApi.addContact(req.body);
+  const contact = new Contact(req.body);
+  await contact.save();
   res.status(201).json(contact);
 };
 
 /**
- * Removes a contact by id in the DB and sends a response with a message that the contact was deleted
+ * Remove a contact from the database by id
  * @param {object} req - Request's object
  * @param {object} res - Response's object
+ * @return {{_id: ObjectId, name: String, email: String, phone: String, favorite: boolean} | null} removed contact, or 'null' if contact is not found
  */
 const removeContact = async (req, res) => {
   const {contactId} = req.params;
-  const removedContact = await contactApi.removeContact(contactId);
+  const removedContact = await Contact.findByIdAndRemove(contactId);
 
   if (!removedContact) {
     throw new HttpError(404, 'Not found');
@@ -53,13 +58,16 @@ const removeContact = async (req, res) => {
 };
 
 /**
- * Update a contact by id in the DB and sends a response with an updated contact
+ * Update a contact in the database
  * @param {object} req - Request's object
  * @param {object} res - Response's object
+ * @return {{_id: ObjectId, name: String, email: String, phone: String, favorite: boolean} | null} updated contact, or 'null' if contact is not found
  */
 const updateContact = async (req, res) => {
   const {contactId} = req.params;
-  const updatedContact = await contactApi.updateContact(contactId, req.body);
+  const updatedContact = await Contact.findByIdAndUpdate(contactId, req.body, {
+    new: true,
+  });
 
   if (!updatedContact) {
     throw new HttpError(404, 'Not found');
@@ -69,15 +77,17 @@ const updateContact = async (req, res) => {
 };
 
 /**
- * Update field favorite in contact in the database and sends a response with an updated contact
+ * Update field favorite in contact in the database
  * @param {object} req - Request's object
  * @param {object} res - Response's object
+ * @return {{_id: ObjectId, name: String, email: String, phone: String, favorite: boolean} | null} updated contact, or 'null' if contact is not found
  */
 const updateContactFavotiteStatus = async (req, res) => {
   const {contactId} = req.params;
-  const updatedContact = await contactApi.updateContactFavotiteStatus(
+  const updatedContact = await Contact.findByIdAndUpdate(
     contactId,
-    req.body
+    {favorite: req.body.favorite},
+    {new: true}
   );
 
   if (!updatedContact) {

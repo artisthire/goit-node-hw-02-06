@@ -28,7 +28,7 @@ router.put(
   catchError(contactsController.updateContact)
 );
 
-router.put(
+router.patch(
   '/:contactId/favorite',
   validate(updateFavoriteJoiSchema, 'missing field favorite'),
   catchError(contactsController.updateContactFavotiteStatus)
