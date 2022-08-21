@@ -4,7 +4,7 @@
  * @param {object} schema - Joi's schema
  * @param {string} [customMessage] - Custome error message
  */
-const validate =
+const validateJoiSchema =
   (schema, customMessage = 'fields validation error') =>
   (req, _, next) => {
     const {error} = schema.validate(req.body);
@@ -18,4 +18,4 @@ const validate =
     next();
   };
 
-module.exports = validate;
+module.exports = validateJoiSchema;

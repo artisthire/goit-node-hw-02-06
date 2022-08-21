@@ -3,7 +3,7 @@
  * If validation fails, passes an error to the general error handler.
  * @param {function} controller - route's controller
  */
-const catchError = (controller) => async (req, res, next) => {
+const controllerCatchError = (controller) => async (req, res, next) => {
   try {
     await controller(req, res, next);
   } catch (error) {
@@ -11,4 +11,4 @@ const catchError = (controller) => async (req, res, next) => {
   }
 };
 
-module.exports = catchError;
+module.exports = controllerCatchError;
