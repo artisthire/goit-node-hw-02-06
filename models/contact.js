@@ -21,7 +21,7 @@ const contactSchema = new mongoose.Schema(
   {versionKey: false}
 );
 
-const contactAddJoiSchema = Joi.object({
+const contactAdd = Joi.object({
   name: Joi.string()
     .pattern(/^[a-zA-Z0-9\s]+$/)
     .min(3)
@@ -34,10 +34,13 @@ const contactAddJoiSchema = Joi.object({
   favorite: Joi.bool(),
 });
 
-const updateFavoriteJoiSchema = Joi.object({
+const updateFavorite = Joi.object({
   favorite: Joi.bool().required(),
 });
 
 const Contact = mongoose.model('contact', contactSchema);
 
-module.exports = {Contact, contactAddJoiSchema, updateFavoriteJoiSchema};
+module.exports = {
+  Contact,
+  joiContactSchemas: {contactAdd, updateFavorite},
+};

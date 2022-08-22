@@ -1,10 +1,7 @@
 const express = require('express');
 
 const {contactsController} = require('../../controllers');
-const {
-  contactAddJoiSchema,
-  updateFavoriteJoiSchema,
-} = require('../../models/contact');
+const {joiContactSchemas} = require('../../models/contact');
 const {
   validateJoiSchema,
   controllerCatchErrors,
@@ -12,35 +9,38 @@ const {
 } = require('../../middlewares');
 
 const router = express.Router();
-const idParamName = 'contactId';
+const idName = 'contactId';
 
 router.get('/', controllerCatchErrors(contactsController.getAll));
 
 router.get(
-  `/:${idParamName}`,
-  validateIdParam(idParamName),
+  `/:${idName}`,
+  validateIdParam(idName),
   controllerCatchErrors(contactsController.get)
 );
 
 router.post(
   '/',
-  validateJoiSchema(contactAddJoiSchema, 'missing required name field'),
+  validateJoiSchema(
+    joiContactSchemas.contactAdd,
+    'missing required name field'
+  ),
   controllerCatchErrors(contactsController.add)
 );
 
 router.delete('/:contactId', controllerCatchErrors(contactsController.remove));
 
 router.put(
-  `/:${idParamName}`,
-  validateIdParam(idParamName),
-  validateJoiSchema(contactAddJoiSchema, 'missing fields'),
+  `/:${idName}`,
+  validateIdParam(idName),
+  validateJoiSchema(joiContactSchemas.contactAdd, 'missing fields'),
   controllerCatchErrors(contactsController.update)
 );
 
 router.patch(
-  `/:${idParamName}/favorite`,
-  validateIdParam(idParamName),
-  validateJoiSchema(updateFavoriteJoiSchema, 'missing field favorite'),
+  `/:${idName}/favorite`,
+  validateIdParam(idName),
+  validateJoiSchema(joiContactSchemas.updateFavorite, 'missing field favorite'),
   controllerCatchErrors(contactsController.updateFavoriteStatus)
 );
 

@@ -1,4 +1,4 @@
-const {HttpError} = require('../../utils/utils');
+const {HttpError} = require('../../utils');
 const {Contact} = require('../../models/contact');
 
 /**
