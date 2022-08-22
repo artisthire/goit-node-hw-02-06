@@ -11,7 +11,7 @@ const validateIdParam = (idName) => (req, _, next) => {
   const isValidId = isValidObjectId(id);
 
   if (!isValidId) {
-    const error = new HttpError(400, `${id} is not valide paramenter "id"`);
+    const error = new HttpError(400, `${id} is not valide paramenter 'id'`);
     next(error);
   }
 
