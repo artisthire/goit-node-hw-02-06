@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
+const {handleSchemaValidationErrors} = require('../utils');
 
 const contactSchema = new mongoose.Schema(
   {
@@ -25,6 +26,7 @@ const contactSchema = new mongoose.Schema(
   {versionKey: false}
 );
 
+contactSchema.post('save', handleSchemaValidationErrors);
 const Contact = mongoose.model('contact', contactSchema);
 
 const contactAdd = Joi.object({
@@ -37,11 +39,11 @@ const contactAdd = Joi.object({
   phone: Joi.string().pattern(
     /^(\+?[0-9]{2})?([ .-]?)\(?([0-9]{3})?\)?([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})$/
   ),
-  favorite: Joi.bool(),
+  favorite: Joi.boolean(),
 });
 
 const updateFavorite = Joi.object({
-  favorite: Joi.bool().required(),
+  favorite: Joi.boolean().required(),
 });
 
 module.exports = {

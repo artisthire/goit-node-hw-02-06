@@ -8,8 +8,9 @@ const {Contact} = require('../../models/contact');
  * @return {{_id: ObjectId, name: String, email: String, phone: String, favorite: boolean} | null} selected contact, or 'null' if contact is not found
  */
 const get = async (req, res) => {
+  const {_id: userId} = req.user;
   const {contactId} = req.params;
-  const contact = await Contact.findById(contactId);
+  const contact = await Contact.findOne({_id: contactId, owner: userId});
 
   if (!contact) {
     throw new HttpError(404, 'Not found');

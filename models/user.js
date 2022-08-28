@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
+const {handleSchemaValidationErrors} = require('../utils');
+
+const subscriptionTypes = ['starter', 'pro', 'business'];
 
 const userSchema = new mongoose.Schema(
   {
@@ -14,28 +17,36 @@ const userSchema = new mongoose.Schema(
     },
     subscription: {
       type: String,
-      enum: ['starter', 'pro', 'business'],
+      enum: {
+        values: subscriptionTypes,
+        message: `Value must be one of [${subscriptionTypes}]`,
+      },
       default: 'starter',
     },
     token: {
       type: String,
       default: null,
-      required: true,
     },
   },
   {versionKey: false}
 );
 
+userSchema.post('save', handleSchemaValidationErrors);
 const User = mongoose.model('user', userSchema);
 
-const userAdd = Joi.object({
+const add = Joi.object({
   password: Joi.string().min(3).required(),
   email: Joi.string().email().required(),
-  subscription: Joi.string().allow('starter', 'pro', 'business'),
-  token: Joi.string().token(),
+  subscription: Joi.string().valid(...subscriptionTypes),
+});
+
+const updateSubscription = Joi.object({
+  subscription: Joi.string()
+    .valid(...subscriptionTypes)
+    .required(),
 });
 
 module.exports = {
   User,
-  joiUserSchemas: {userAdd},
+  joiUserSchemas: {add, updateSubscription},
 };

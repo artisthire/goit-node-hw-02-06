@@ -12,11 +12,9 @@ const {
 const router = express.Router();
 const idName = 'contactId';
 
-router.get(
-  '/',
-  authenticateUser,
-  controllerCatchErrors(contactsController.getAll)
-);
+router.use(authenticateUser);
+
+router.get('/', controllerCatchErrors(contactsController.getAll));
 
 router.get(
   `/:${idName}`,
@@ -45,7 +43,7 @@ router.put(
 router.patch(
   `/:${idName}/favorite`,
   validateIdParam(idName),
-  validateJoiSchema(joiContactSchemas.updateFavorite, 'missing field favorite'),
+  validateJoiSchema(joiContactSchemas.updateFavorite, 'wrong field favorite'),
   controllerCatchErrors(contactsController.updateFavoriteStatus)
 );
 

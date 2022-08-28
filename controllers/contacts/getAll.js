@@ -6,7 +6,8 @@ const {Contact} = require('../../models/contact');
  * @return {Array.<{_id: ObjectId, name: String, email: String, phone: String, favorite: boolean}>} all contacts
  */
 const getAll = async (req, res) => {
-  const contacts = await Contact.find();
+  const {_id: userId} = req.user;
+  const contacts = await Contact.find({owner: userId});
   res.json(contacts);
 };
 

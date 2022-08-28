@@ -12,13 +12,13 @@ const router = express.Router();
 
 router.post(
   '/signup',
-  validateJoiSchema(joiUserSchemas.userAdd, 'missing required fields'),
+  validateJoiSchema(joiUserSchemas.add, 'missing required fields'),
   controllerCatchErrors(authController.singup)
 );
 
 router.post(
   '/login',
-  validateJoiSchema(joiUserSchemas.userAdd, 'missing required fields'),
+  validateJoiSchema(joiUserSchemas.add, 'missing required fields'),
   controllerCatchErrors(authController.login)
 );
 
@@ -32,6 +32,16 @@ router.get(
   '/current',
   authenticateUser,
   controllerCatchErrors(usersController.get)
+);
+
+router.patch(
+  '/',
+  validateJoiSchema(
+    joiUserSchemas.updateSubscription,
+    `missing or wrong field 'subscription'`
+  ),
+  authenticateUser,
+  controllerCatchErrors(usersController.updateSubscription)
 );
 
 module.exports = router;
