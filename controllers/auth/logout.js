@@ -1,4 +1,4 @@
-const {User} = require('../../models/user');
+const { User } = require("../../models/user");
 
 /**
  * Logout user
@@ -6,8 +6,8 @@ const {User} = require('../../models/user');
  * @param {object} res - Response's object
  */
 const logout = async (req, res) => {
-  const {_id} = req.user;
-  await User.findByIdAndUpdate(_id, {token: null});
+  const { _id } = req.user;
+  await User.findByIdAndUpdate(_id, { token: null });
 
   res.status(204).send();
 };

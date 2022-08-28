@@ -1,12 +1,12 @@
-const mongoose = require('mongoose');
-const Joi = require('joi');
-const {handleSchemaValidationErrors} = require('../utils');
+const mongoose = require("mongoose");
+const Joi = require("joi");
+const { handleSchemaValidationErrors } = require("../utils");
 
 const contactSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Set name for contact'],
+      required: [true, "Set name for contact"],
     },
     email: {
       type: String,
@@ -20,15 +20,15 @@ const contactSchema = new mongoose.Schema(
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'user',
+      ref: "user",
     },
   },
-  {versionKey: false}
+  { versionKey: false }
 );
 
-contactSchema.post('save', handleSchemaValidationErrors);
+contactSchema.post("save", handleSchemaValidationErrors);
 
-const Contact = mongoose.model('contact', contactSchema);
+const Contact = mongoose.model("contact", contactSchema);
 
 const contactAdd = Joi.object({
   name: Joi.string()
@@ -49,5 +49,5 @@ const updateFavorite = Joi.object({
 
 module.exports = {
   Contact,
-  joiContactSchemas: {contactAdd, updateFavorite},
+  joiContactSchemas: { contactAdd, updateFavorite },
 };

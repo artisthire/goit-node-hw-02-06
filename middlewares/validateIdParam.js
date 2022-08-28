@@ -1,5 +1,5 @@
-const {isValidObjectId} = require('mongoose');
-const {HttpError} = require('../utils');
+const { isValidObjectId } = require("mongoose");
+const { HttpError } = require("../utils");
 
 /**
  * Validate id parameter in the request

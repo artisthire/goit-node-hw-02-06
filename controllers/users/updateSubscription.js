@@ -1,4 +1,4 @@
-const {User} = require('../../models/user');
+const { User } = require("../../models/user");
 
 /**
  * Update user's subscription in the database by user's id
@@ -7,12 +7,12 @@ const {User} = require('../../models/user');
  * @return {{email: String, subscription: String}} user data
  */
 const updateSubscription = async (req, res) => {
-  const {_id} = req.user;
-  const {subscription} = req.body;
+  const { _id } = req.user;
+  const { subscription } = req.body;
   const user = await User.findByIdAndUpdate(
     _id,
-    {subscription},
-    {runValidators: true, new: true}
+    { subscription },
+    { runValidators: true, new: true }
   );
 
   res.json({

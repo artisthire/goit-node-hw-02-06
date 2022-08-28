@@ -10,7 +10,7 @@ class HttpError extends Error {
    */
   constructor(code, message) {
     super(message);
-    this.name = 'HttpError';
+    this.name = "HttpError";
     this.status = code;
   }
 }

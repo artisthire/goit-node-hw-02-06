@@ -5,12 +5,12 @@
  * @param {string} [customMessage] - Custome error message
  */
 const validateJoiSchema =
-  (schema, customMessage = 'fields validation error') =>
+  (schema, customMessage = "fields validation error") =>
   (req, _, next) => {
-    const {error} = schema.validate(req.body);
+    const { error } = schema.validate(req.body);
 
     if (error) {
-      error.messageDetails = {message: customMessage, details: error.message};
+      error.messageDetails = { message: customMessage, details: error.message };
       error.status = 400;
       next(error);
     }

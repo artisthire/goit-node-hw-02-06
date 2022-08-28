@@ -5,7 +5,7 @@
  * @return {{email: String, subscription: String}} user data
  */
 const get = async (req, res) => {
-  const {email, subscription} = req.user;
+  const { email, subscription } = req.user;
   res.json({
     email,
     subscription,

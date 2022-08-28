@@ -1,41 +1,41 @@
-const express = require('express');
+const express = require("express");
 
-const {authController, usersController} = require('../../controllers');
-const {joiUserSchemas} = require('../../models/user');
+const { authController, usersController } = require("../../controllers");
+const { joiUserSchemas } = require("../../models/user");
 const {
   validateJoiSchema,
   controllerCatchErrors,
   authenticateUser,
-} = require('../../middlewares');
+} = require("../../middlewares");
 
 const router = express.Router();
 
 router.post(
-  '/signup',
-  validateJoiSchema(joiUserSchemas.add, 'missing required fields'),
+  "/signup",
+  validateJoiSchema(joiUserSchemas.add, "missing required fields"),
   controllerCatchErrors(authController.singup)
 );
 
 router.post(
-  '/login',
-  validateJoiSchema(joiUserSchemas.add, 'missing required fields'),
+  "/login",
+  validateJoiSchema(joiUserSchemas.add, "missing required fields"),
   controllerCatchErrors(authController.login)
 );
 
 router.get(
-  '/logout',
+  "/logout",
   authenticateUser,
   controllerCatchErrors(authController.logout)
 );
 
 router.get(
-  '/current',
+  "/current",
   authenticateUser,
   controllerCatchErrors(usersController.get)
 );
 
 router.patch(
-  '/',
+  "/",
   validateJoiSchema(
     joiUserSchemas.updateSubscription,
     `missing or wrong field 'subscription'`

@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
-const {User} = require('../models/user');
-const {HttpError} = require('../utils');
+const jwt = require("jsonwebtoken");
+const { User } = require("../models/user");
+const { HttpError } = require("../utils");
 
 /**
  * Authenticate the user by JWT token in the authorization header
@@ -10,25 +10,25 @@ const {HttpError} = require('../utils');
  * @param {object} next - callback function
  */
 const authenticateUser = async (req, _, next) => {
-  const authorization = req.get('Authorization') || '';
-  const [tokenType, token] = authorization.split(' ');
+  const authorization = req.get("Authorization") || "";
+  const [tokenType, token] = authorization.split(" ");
 
   try {
-    if (!tokenType || tokenType !== 'Bearer' || !token) {
-      throw new HttpError(401, 'Not authorized');
+    if (!tokenType || tokenType !== "Bearer" || !token) {
+      throw new HttpError(401, "Not authorized");
     }
 
-    const {_id} = await jwt.verify(token, process.env.PRIVATE_KEY);
-    const user = await User.findById({_id});
+    const { _id } = await jwt.verify(token, process.env.PRIVATE_KEY);
+    const user = await User.findById({ _id });
 
     if (!user || !user.token || user.token !== token) {
-      throw new HttpError(401, 'Not authorized');
+      throw new HttpError(401, "Not authorized");
     }
 
     req.user = user;
     next();
   } catch (error) {
-    if (['TokenExpiredError', 'JsonWebTokenError'].includes(error.name)) {
+    if (["TokenExpiredError", "JsonWebTokenError"].includes(error.name)) {
       error.status = 401;
     }
 
