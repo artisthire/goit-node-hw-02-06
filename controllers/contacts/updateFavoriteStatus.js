@@ -14,7 +14,7 @@ const updateFavoriteStatus = async (req, res) => {
     {_id: contactId, owner: userId},
     {favorite: req.body.favorite},
     {new: true}
-  );
+  ).populate({path: 'owner', select: 'email subscription'});
 
   if (!updatedContact) {
     throw new HttpError(404, 'Not found');

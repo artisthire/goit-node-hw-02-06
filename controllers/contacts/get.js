@@ -10,7 +10,10 @@ const {Contact} = require('../../models/contact');
 const get = async (req, res) => {
   const {_id: userId} = req.user;
   const {contactId} = req.params;
-  const contact = await Contact.findOne({_id: contactId, owner: userId});
+  const contact = await Contact.findOne({
+    _id: contactId,
+    owner: userId,
+  }).populate({path: 'owner', select: 'email subscription'});
 
   if (!contact) {
     throw new HttpError(404, 'Not found');

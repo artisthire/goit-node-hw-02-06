@@ -16,7 +16,7 @@ const update = async (req, res) => {
     {
       new: true,
     }
-  );
+  ).populate({path: 'owner', select: 'email subscription'});
 
   if (!updatedContact) {
     throw new HttpError(404, 'Not found');

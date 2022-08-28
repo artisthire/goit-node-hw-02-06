@@ -27,6 +27,7 @@ const contactSchema = new mongoose.Schema(
 );
 
 contactSchema.post('save', handleSchemaValidationErrors);
+
 const Contact = mongoose.model('contact', contactSchema);
 
 const contactAdd = Joi.object({

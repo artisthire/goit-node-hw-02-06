@@ -7,7 +7,10 @@ const {Contact} = require('../../models/contact');
  */
 const getAll = async (req, res) => {
   const {_id: userId} = req.user;
-  const contacts = await Contact.find({owner: userId});
+  const contacts = await Contact.find({owner: userId}).populate({
+    path: 'owner',
+    select: 'email subscription',
+  });
   res.json(contacts);
 };
 
