@@ -7,10 +7,18 @@ const {Contact} = require('../../models/contact');
  */
 const getAll = async (req, res) => {
   const {_id: userId} = req.user;
-  const contacts = await Contact.find({owner: userId}).populate({
-    path: 'owner',
-    select: 'email subscription',
-  });
+  const {favorite, page = 1, limit = 10} = req.query;
+  const contactsLimit = Math.min(10, Number(limit));
+  const contactsSkip = (page - 1) * limit;
+  const findQuery = favorite ? {owner: userId, favorite} : {owner: userId};
+
+  const contacts = await Contact.find(findQuery)
+    .skip(contactsSkip)
+    .limit(contactsLimit)
+    .populate({
+      path: 'owner',
+      select: 'email subscription',
+    });
   res.json(contacts);
 };
 
