@@ -6,12 +6,17 @@ const {
   validateJoiSchema,
   controllerCatchErrors,
   validateIdParam,
+  authenticateUser,
 } = require('../../middlewares');
 
 const router = express.Router();
 const idName = 'contactId';
 
-router.get('/', controllerCatchErrors(contactsController.getAll));
+router.get(
+  '/',
+  authenticateUser,
+  controllerCatchErrors(contactsController.getAll)
+);
 
 router.get(
   `/:${idName}`,
