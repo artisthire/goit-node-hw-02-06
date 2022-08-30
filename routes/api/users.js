@@ -6,6 +6,7 @@ const {
   validateJoiSchema,
   controllerCatchErrors,
   authenticateUser,
+  uploadFile,
 } = require("../../middlewares");
 
 const router = express.Router();
@@ -42,6 +43,13 @@ router.patch(
   ),
   authenticateUser,
   controllerCatchErrors(usersController.updateSubscription)
+);
+
+router.patch(
+  "/avatar",
+  authenticateUser,
+  uploadFile.single("avatar"),
+  controllerCatchErrors(usersController.updateAvatar)
 );
 
 module.exports = router;
