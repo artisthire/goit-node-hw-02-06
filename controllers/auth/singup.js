@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const gravatar = require("gravatar");
 
 const { User } = require("../../models/user");
 const { HttpError } = require("../../utils");
@@ -18,7 +19,8 @@ const singup = async (req, res) => {
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  const newUser = new User({ email, password: passwordHash });
+  const avatarURL = gravatar.url(email);
+  const newUser = new User({ email, password: passwordHash, avatarURL });
   await newUser.save();
 
   res.status(201).json({
