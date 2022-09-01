@@ -9,6 +9,8 @@ const usersRouter = require("./routes/api/users");
 const app = express();
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 const staticDir = path.resolve("./public");
+const uploadDir = path.resolve("./public/avatars");
+console.log(path.basename(uploadDir));
 
 app.use(logger(formatsLogger));
 app.use(cors());

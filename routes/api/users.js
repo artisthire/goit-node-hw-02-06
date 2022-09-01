@@ -46,7 +46,7 @@ router.patch(
 );
 
 router.patch(
-  "/avatar",
+  "/avatars",
   authenticateUser,
   uploadFile.single("avatar"),
   controllerCatchErrors(usersController.updateAvatar)
