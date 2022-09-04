@@ -38,7 +38,7 @@ describe("test signup controller", () => {
     await mongoose.connection.db.dropCollection("users");
   });
 
-  test("response returns code 200", async () => {
+  test("should return code 200", async () => {
     const loginUser = { email: "a@a.ua", password: "123456" };
     const response = await request(app)
       .post("/api/users/login")
@@ -46,7 +46,7 @@ describe("test signup controller", () => {
     expect(response.statusCode).toBe(200);
   });
 
-  test("response has field token", async () => {
+  test("should have field token", async () => {
     const loginUser = { email: "a@a.ua", password: "123456" };
     const response = await request(app)
       .post("/api/users/login")
@@ -55,7 +55,7 @@ describe("test signup controller", () => {
     expect(response.body.token).toBeDefined();
   });
 
-  test("response has field user: {email, subscription}", async () => {
+  test("should have field user: {email, subscription}", async () => {
     const loginUser = { email: "a@a.ua", password: "123456" };
     const response = await request(app)
       .post("/api/users/login")
