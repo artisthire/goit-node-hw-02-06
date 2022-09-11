@@ -35,6 +35,20 @@ router.get(
   controllerCatchErrors(usersController.get)
 );
 
+router.get(
+  "/verify/:verificationToken",
+  controllerCatchErrors(authController.verifyEmail)
+);
+
+router.post(
+  "/verify",
+  validateJoiSchema(
+    joiUserSchemas.verifyEmail,
+    `missing required field 'email'`
+  ),
+  controllerCatchErrors(authController.reverifyEmail)
+);
+
 router.patch(
   "/",
   validateJoiSchema(

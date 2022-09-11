@@ -18,6 +18,10 @@ const login = async (req, res) => {
     throw new HttpError(401, "Email or password is wrong");
   }
 
+  if (!user.verify) {
+    throw new HttpError(401, "Email not confirmed");
+  }
+
   const token = await jwt.sign({ _id: user._id }, process.env.PRIVATE_KEY, {
     expiresIn: "1d",
   });

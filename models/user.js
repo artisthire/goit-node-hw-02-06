@@ -32,6 +32,14 @@ const userSchema = new mongoose.Schema(
       default: "",
       required: true,
     },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      default: "",
+    },
   },
   { versionKey: false }
 );
@@ -51,7 +59,11 @@ const updateSubscription = Joi.object({
     .required(),
 });
 
+const verifyEmail = Joi.object({
+  email: Joi.string().email().required(),
+});
+
 module.exports = {
   User,
-  joiUserSchemas: { add, updateSubscription },
+  joiUserSchemas: { add, updateSubscription, verifyEmail },
 };

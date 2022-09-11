@@ -1,8 +1,9 @@
 const bcrypt = require("bcryptjs");
 const gravatar = require("gravatar");
+const { nanoid } = require("nanoid");
 
 const { User } = require("../../models/user");
-const { HttpError } = require("../../utils");
+const { HttpError, sendMail } = require("../../utils");
 
 /**
  * Register user
@@ -20,8 +21,18 @@ const singup = async (req, res) => {
 
   const passwordHash = await bcrypt.hash(password, 10);
   const avatarURL = gravatar.url(email);
-  const newUser = new User({ email, password: passwordHash, avatarURL });
+  const verificationToken = nanoid();
+  const newUser = new User({
+    email,
+    password: passwordHash,
+    avatarURL,
+    verificationToken,
+  });
   await newUser.save();
+
+  const { SERVER_PORT } = process.env;
+  const message = `Please follow <a href="http://localhost:${SERVER_PORT}/api/users/verify/${verificationToken}">the link</a> to confirm your email`;
+  await sendMail(email, message);
 
   res.status(201).json({
     user: {
