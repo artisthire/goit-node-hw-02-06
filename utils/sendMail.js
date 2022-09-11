@@ -1,5 +1,10 @@
 const nodemailer = require("nodemailer");
 
+/**
+ * Send notification emails
+ * @param {string} receiver - receiver's email
+ * @param {string} text - message text
+ */
 const sendMail = async (receiver, text) => {
   const { EMAIL_USER, EMAIL_PASSWORD } = process.env;
 
